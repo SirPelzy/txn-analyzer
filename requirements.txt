@@ -1,1 +1,11 @@
+# requirements.txt
+Flask
 
+# Data Handling and Analysis (Excel/CSV reading, filtering, aggregation)
+pandas
+
+# Required by pandas to read/write .xlsx files
+openpyxl
+
+# Production WSGI Server (to run Flask app on Koyeb/Northflank/Railway)
+gunicorn
