@@ -1,1 +1,16 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
 
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Uploaded files (if storing temporarily)
+uploads/
+
+# IDE files (optional)
+.idea/
+.vscode/
+*.swp
