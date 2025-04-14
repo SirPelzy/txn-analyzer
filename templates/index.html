@@ -37,9 +37,13 @@
 
     {% if results %}
         <h2>Analysis Results</h2>
-        <p>Summary: {{ summary_stats | safe }}</p> <form method="POST" action="{{ url_for('download_results') }}">
-            <button type="submit">Download Results (.xlsx)</button>
-        </form>
+        {# Ensure summary is displayed correctly and download form is properly placed #}
+        <div style="margin-bottom: 15px;">
+             <p style="display: inline-block; margin-right: 10px;">Summary: {{ summary_stats | safe }}</p>
+             <form method="POST" action="{{ url_for('download_results') }}" style="display: inline-block;">
+                 <button type="submit">Download Results (.xlsx)</button>
+             </form>
+        </div>
         <div class="results-table">
             <table>
                 <thead>
@@ -53,10 +57,26 @@
                 <tbody>
                     {% for row in results %}
                     <tr>
-                        <td>{{ row['ACCOUNT NUMBER'] }}</td>
-                        <td>{{ row['Total Transaction Volume'] }}</td>
-                        <td>{{ "{:,.2f}".format(row['Total Transaction Value']) }}</td>
-                        <td>{{ "{:,.2f}".format(row['Total Income']) }}</td>
+                        {# Use default filter for safety on all potentially missing keys #}
+                        <td>{{ row['ACCOUNT NUMBER'] | default('N/A') }}</td>
+                        <td>{{ row['Total Transaction Volume'] | default(0) }}</td>
+                        <td>
+                            {# Check if value exists and is a number before formatting #}
+                            {% if row['Total Transaction Value'] is defined and row['Total Transaction Value'] is number %}
+                                {{ "{:,.2f}".format(row['Total Transaction Value']) }}
+                            {% else %}
+                                {# Display 0.00 or N/A if not a valid number or is None/missing #}
+                                {{ row['Total Transaction Value'] | default('0.00') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {# Apply same check for Total Income #}
+                            {% if row['Total Income'] is defined and row['Total Income'] is number %}
+                                {{ "{:,.2f}".format(row['Total Income']) }}
+                            {% else %}
+                                {{ row['Total Income'] | default('0.00') }}
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
