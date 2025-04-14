@@ -17,7 +17,7 @@ REQUIRED_COLUMNS = {
 }
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24) # Important for flash messages and session
+app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24)) # Important for flash messages and session
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER) # Create upload folder if it doesn't exist
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
