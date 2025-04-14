@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Account Transaction Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Virtual Account Transaction Analysis Tool</h1>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_file') }}">
+        <label for="file">Upload Transaction File (.xlsx or .csv):</label><br>
+        <input type="file" id="file" name="file" accept=".xlsx, .csv" required><br><br>
+
+        <label for="file_type">Select Partner/Filter Type:</label><br>
+        <select name="file_type" id="file_type" required>
+            <option value="" disabled selected>-- Select Type --</option>
+            <option value="Any Partner">Any Partner</option>
+            <option value="Fincra">Fincra</option>
+            <option value="Leatherback or Fusion">Leatherback or Fusion</option>
+            <option value="Cashout">Cashout</option>
+            </select><br><br>
+
+        <button type="submit">Analyze Transactions</button>
+    </form>
+
+    {% if results %}
+        <h2>Analysis Results</h2>
+        <p>Summary: {{ summary_stats | safe }}</p> <form method="POST" action="{{ url_for('download_results') }}">
+            <button type="submit">Download Results (.xlsx)</button>
+        </form>
+        <div class="results-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ACCOUNT NUMBER</th>
+                        <th>Total Transaction Volume</th>
+                        <th>Total Transaction Value</th>
+                        <th>Total Income</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in results %}
+                    <tr>
+                        <td>{{ row['ACCOUNT NUMBER'] }}</td>
+                        <td>{{ row['Total Transaction Volume'] }}</td>
+                        <td>{{ "{:,.2f}".format(row['Total Transaction Value']) }}</td>
+                        <td>{{ "{:,.2f}".format(row['Total Income']) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+</body>
+</html>
