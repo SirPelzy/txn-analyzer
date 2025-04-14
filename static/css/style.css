@@ -1,1 +1,100 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+}
 
+h1, h2 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="file"], select {
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 95%; /* Adjust as needed */
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.results-table {
+    margin-top: 20px;
+    max-height: 500px; /* Allow scrolling for long tables */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    position: sticky; /* Make header sticky */
+    top: 0; /* Stick to the top of the scrolling container */
+    z-index: 1;
+}
+
+td:nth-child(3), td:nth-child(4) { /* Right-align currency columns */
+    text-align: right;
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+.flashes .error {
+    color: red;
+    background-color: #fdd;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 3px;
+}
+.flashes .warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 10px;
+    border-radius: 3px;
+}
+.flashes .success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 3px;
+}
