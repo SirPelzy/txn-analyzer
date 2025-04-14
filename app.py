@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = {'xlsx', 'csv'}
 INCOME_RULES_FILE = 'income_rules.csv'
 # Essential columns for basic operation and specific filtering logic
 REQUIRED_COLUMNS = {
-    'ACCOUNT NUMBER', 'TRANSACTION AMOUNT', 'TRANSACTION TYPE',
+    'ACCOUNT NUMBER', 'TRANSACTION AMOUNT', 'PART TRAN TYPE',
     'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2'
     # Add other columns from 7.1 if needed for display, though not for core logic
     # 'ACCOUNT NAME', 'TRANSACTION REF', etc.
@@ -182,15 +182,15 @@ def process_transactions(file_path, file_type, income_rules):
         # df.dropna(subset=['TRANSACTION AMOUNT'], inplace=True) # Example: remove rows with invalid amounts now
 
     # **Whitespace Trimming and Type Conversion for Filter Columns**
-    str_cols_to_clean = ['TRANSACTION TYPE', 'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2', 'ACCOUNT NUMBER']
+    str_cols_to_clean = ['PART TRAN TYPE', 'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2', 'ACCOUNT NUMBER']
     for col in str_cols_to_clean:
         if col in df.columns:
             # Convert to string, strip whitespace, handle potential errors like NaN
             df[col] = df[col].astype(str).fillna('').str.strip()
 
     # Ensure uppercase for relevant columns AFTER stripping
-    if 'TRANSACTION TYPE' in df.columns:
-         df['TRANSACTION TYPE'] = df['TRANSACTION TYPE'].str.upper()
+    if 'PART TRAN TYPE' in df.columns:
+         df['PART TRAN TYPE'] = df['PART TRAN TYPE'].str.upper()
     if 'TRAN_PARTICULAR' in df.columns:
          df['TRAN_PARTICULAR'] = df['TRAN_PARTICULAR'].str.upper() # Already uppercased via column rename, but belt-and-suspenders
 
@@ -212,8 +212,8 @@ def process_transactions(file_path, file_type, income_rules):
 
     # Define individual filters first for debugging
     try:
-        f_type_is_c = (df['TRANSACTION TYPE'] == 'C')
-        print(f"Rows where TRANSACTION TYPE == 'C': {f_type_is_c.sum()}")
+        f_type_is_c = (df['PART TRAN TYPE'] == 'C')
+        print(f"Rows where PART TRAN TYPE == 'C': {f_type_is_c.sum()}")
 
         f_tp2_10_digits = df['TRAN_PARTICULAR_2'].str.match(r'^\d{10}')
         print(f"Rows where TRAN_PARTICULAR_2 starts with 10 digits: {f_tp2_10_digits.sum()}")
