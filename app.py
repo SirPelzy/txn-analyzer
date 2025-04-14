@@ -12,7 +12,7 @@ ALLOWED_EXTENSIONS = {'xlsx', 'csv'}
 INCOME_RULES_FILE = 'income_rules.csv'
 # Essential columns for basic operation and specific filtering logic
 REQUIRED_COLUMNS = {
-    'ACCOUNT NUMBER', 'TRANSACTION AMOUNT', 'TRANSACTION TYPE',
+    'ACCOUNT NUMBER', 'TRANSACTION AMOUNT', 'PART TRAN TYPE',
     'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2'
 }
 
@@ -180,13 +180,13 @@ def process_transactions(file_path, file_type, income_rules):
             print(f"INFO: {rows_with_bad_amount} rows had non-numeric TRANSACTION AMOUNT.")
             sys.stdout.flush()
 
-    str_cols_to_clean = ['TRANSACTION TYPE', 'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2', 'ACCOUNT NUMBER']
+    str_cols_to_clean = ['PART TRAN TYPE', 'TRAN_PARTICULAR', 'TRAN_PARTICULAR_2', 'ACCOUNT NUMBER']
     for col in str_cols_to_clean:
         if col in df.columns:
             df[col] = df[col].astype(str).fillna('').str.strip()
 
-    if 'TRANSACTION TYPE' in df.columns:
-         df['TRANSACTION TYPE'] = df['TRANSACTION TYPE'].str.upper()
+    if 'PART TRAN TYPE' in df.columns:
+         df['PART TRAN TYPE'] = df['PART TRAN TYPE'].str.upper()
     if 'TRAN_PARTICULAR' in df.columns:
          df['TRAN_PARTICULAR'] = df['TRAN_PARTICULAR'].str.upper()
 
@@ -204,8 +204,8 @@ def process_transactions(file_path, file_type, income_rules):
     sys.stdout.flush()
     try:
         # Define individual filters first for debugging
-        f_type_is_c = (df['TRANSACTION TYPE'] == 'C')
-        print(f"Rows where TRANSACTION TYPE == 'C': {f_type_is_c.sum()}")
+        f_type_is_c = (df['PART TRAN TYPE'] == 'C')
+        print(f"Rows where PART TRAN TYPE == 'C': {f_type_is_c.sum()}")
 
         # Using regex match requires non-NA values, fillna done above
         f_tp2_10_digits = df['TRAN_PARTICULAR_2'].str.match(r'^\d{10}')
