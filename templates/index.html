@@ -57,24 +57,24 @@
                 <tbody>
                     {% for row in results %}
                     <tr>
-                        {# Use default filter for safety on all potentially missing keys #}
+                        {# Use exact keys matching the DataFrame columns from logs #}
                         <td>{{ row['ACCOUNT NUMBER'] | default('N/A') }}</td>
-                        <td>{{ row['Total Transaction Volume'] | default(0) }}</td>
+                        <td>{{ row['Total_Transaction_Volume'] | default(0) }}</td> {# Corrected Key #}
                         <td>
                             {# Check if value exists and is a number before formatting #}
-                            {% if row['Total Transaction Value'] is defined and row['Total Transaction Value'] is number %}
-                                {{ "{:,.2f}".format(row['Total Transaction Value']) }}
+                            {% if row['Total_Transaction_Value'] is defined and row['Total_Transaction_Value'] is number %} {# Corrected Key #}
+                                {{ "{:,.2f}".format(row['Total_Transaction_Value']) }} {# Corrected Key #}
                             {% else %}
                                 {# Display 0.00 or N/A if not a valid number or is None/missing #}
-                                {{ row['Total Transaction Value'] | default('0.00') }}
+                                {{ row['Total_Transaction_Value'] | default('0.00') }} {# Corrected Key #}
                             {% endif %}
                         </td>
                         <td>
                             {# Apply same check for Total Income #}
-                            {% if row['Total Income'] is defined and row['Total Income'] is number %}
-                                {{ "{:,.2f}".format(row['Total Income']) }}
+                            {% if row['Total_Income'] is defined and row['Total_Income'] is number %} {# Corrected Key #}
+                                {{ "{:,.2f}".format(row['Total_Income']) }} {# Corrected Key #}
                             {% else %}
-                                {{ row['Total Income'] | default('0.00') }}
+                                {{ row['Total_Income'] | default('0.00') }} {# Corrected Key #}
                             {% endif %}
                         </td>
                     </tr>
