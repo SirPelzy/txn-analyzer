@@ -19,25 +19,16 @@
       {% endif %}
     {% endwith %}
 
+    {# Removed the file_type dropdown #}
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_file') }}">
         <label for="file">Upload Transaction File (.xlsx or .csv):</label><br>
         <input type="file" id="file" name="file" accept=".xlsx, .csv" required><br><br>
-
-        <label for="file_type">Select Partner/Filter Type:</label><br>
-        <select name="file_type" id="file_type" required>
-            <option value="" disabled selected>-- Select Type --</option>
-            <option value="Any Partner">Any Partner</option>
-            <option value="Fincra">Fincra</option>
-            <option value="Leatherback or Fusion">Leatherback or Fusion</option>
-            <option value="Cashout">Cashout</option>
-            </select><br><br>
 
         <button type="submit">Analyze Transactions</button>
     </form>
 
     {% if results %}
         <h2>Analysis Results</h2>
-        {# Ensure summary is displayed correctly and download form is properly placed #}
         <div style="margin-bottom: 15px;">
              <p style="display: inline-block; margin-right: 10px;">Summary: {{ summary_stats | safe }}</p>
              <form method="POST" action="{{ url_for('download_results') }}" style="display: inline-block;">
@@ -57,24 +48,20 @@
                 <tbody>
                     {% for row in results %}
                     <tr>
-                        {# Use exact keys matching the DataFrame columns from logs #}
                         <td>{{ row['ACCOUNT NUMBER'] | default('N/A') }}</td>
-                        <td>{{ row['Total_Transaction_Volume'] | default(0) }}</td> {# Corrected Key #}
+                        <td>{{ row['Total_Transaction_Volume'] | default(0) }}</td>
                         <td>
-                            {# Check if value exists and is a number before formatting #}
-                            {% if row['Total_Transaction_Value'] is defined and row['Total_Transaction_Value'] is number %} {# Corrected Key #}
-                                {{ "{:,.2f}".format(row['Total_Transaction_Value']) }} {# Corrected Key #}
+                            {% if row['Total_Transaction_Value'] is defined and row['Total_Transaction_Value'] is number %}
+                                {{ "{:,.2f}".format(row['Total_Transaction_Value']) }}
                             {% else %}
-                                {# Display 0.00 or N/A if not a valid number or is None/missing #}
-                                {{ row['Total_Transaction_Value'] | default('0.00') }} {# Corrected Key #}
+                                {{ row['Total_Transaction_Value'] | default('0.00') }}
                             {% endif %}
                         </td>
                         <td>
-                            {# Apply same check for Total Income #}
-                            {% if row['Total_Income'] is defined and row['Total_Income'] is number %} {# Corrected Key #}
-                                {{ "{:,.2f}".format(row['Total_Income']) }} {# Corrected Key #}
+                            {% if row['Total_Income'] is defined and row['Total_Income'] is number %}
+                                {{ "{:,.2f}".format(row['Total_Income']) }}
                             {% else %}
-                                {{ row['Total_Income'] | default('0.00') }} {# Corrected Key #}
+                                {{ row['Total_Income'] | default('0.00') }}
                             {% endif %}
                         </td>
                     </tr>
