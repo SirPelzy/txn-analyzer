@@ -237,7 +237,7 @@ def process_transactions(file_path, income_rules):
             combined_filter = ( f_amount_notna & f_amount & f_type_is_c & f_not_rvsl & f_not_reversal & f_not_gl )
         elif detected_file_type == 'Cashout 2':
             f_amount = (df['TRANSACTION AMOUNT'] >= 100)
-            combined_filter = ( f_amount_notna & f_amount & f_type_is_c & f_tp2_not_ft )
+            combined_filter = ( f_amount_notna & f_amount & f_type_is_c )
         elif detected_file_type == 'Cashout 3':
             f_amount = (df['TRANSACTION AMOUNT'] >= 100)
             # Handle potential NaN before startswith
